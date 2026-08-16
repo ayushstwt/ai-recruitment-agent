@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: ai-recruitment-agent
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/recruitment}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  flyway:
+    enabled: true
+
+app:
+  allowed-origins:
+    - ${FRONTEND_URL:http://localhost:3000}
+  security:
+    api-key:
+      header-name: ${API_KEY_HEADER_NAME:X-API-KEY}
