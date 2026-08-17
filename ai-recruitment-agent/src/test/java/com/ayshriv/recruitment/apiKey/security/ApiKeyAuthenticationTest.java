@@ -6,6 +6,7 @@ import com.ayshriv.recruitment.common.response.ApiResponse;
 import com.ayshriv.recruitment.common.response.ResponseUtil;
 import com.ayshriv.recruitment.common.security.SecurityConfig;
 import com.ayshriv.recruitment.common.security.SecurityContextService;
+import com.ayshriv.recruitment.organization.service.OrganizationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,9 @@ class ApiKeyAuthenticationTest {
 
     @MockitoBean
     private ApiKeyService apiKeyService;
+
+    @MockitoBean
+    private OrganizationService organizationService;
 
     @RestController
     @RequestMapping("/api/v1/secure")

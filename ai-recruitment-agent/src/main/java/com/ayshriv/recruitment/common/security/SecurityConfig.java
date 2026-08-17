@@ -6,6 +6,7 @@ import com.ayshriv.recruitment.apiKey.service.ApiKeyService;
 import com.ayshriv.recruitment.common.config.AppProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -36,6 +37,18 @@ public class SecurityConfig {
     };
 
     /**
+     * Provisioning endpoints that do not require an API key.
+     *
+     * <p>{@code POST /api/v1/organizations} creates a tenant. A brand new
+     * organization cannot authenticate with an API key because it does not
+     * exist yet, so creation must be reachable without tenant credentials.
+     * This is an explicitly isolated provisioning operation that should be
+     * restricted to a platform admin authentication flow when one is
+     * introduced.</p>
+     */
+    private static final String PROVISIONING_ORGANIZATIONS = "/api/v1/organizations";
+
+    /**
      * Configure the stateless, API key based security filter chain.
      *
      * @param http                      the HTTP security builder
@@ -56,6 +69,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(entryPoint))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_PATHS).permitAll()
+                        .requestMatchers(HttpMethod.POST, PROVISIONING_ORGANIZATIONS).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(apiKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
