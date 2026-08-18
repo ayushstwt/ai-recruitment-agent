@@ -38,6 +38,44 @@ public class AppProperties {
          * API key authentication settings.
          */
         private ApiKey apiKey = new ApiKey();
+
+        /**
+         * Password policy applied when a user password is created or changed.
+         */
+        private PasswordPolicy passwordPolicy = new PasswordPolicy();
+    }
+
+    /**
+     * Configurable password strength requirements.
+     */
+    @Getter
+    @Setter
+    public static class PasswordPolicy {
+
+        /**
+         * Minimum password length.
+         */
+        private int minLength = 8;
+
+        /**
+         * Whether an uppercase letter is required.
+         */
+        private boolean requireUppercase = true;
+
+        /**
+         * Whether a lowercase letter is required.
+         */
+        private boolean requireLowercase = true;
+
+        /**
+         * Whether a digit is required.
+         */
+        private boolean requireDigit = true;
+
+        /**
+         * Whether a non-alphanumeric character is required.
+         */
+        private boolean requireSpecialCharacter = true;
     }
 
     /**

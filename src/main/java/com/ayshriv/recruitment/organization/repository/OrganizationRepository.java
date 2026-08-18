@@ -1,9 +1,11 @@
 package com.ayshriv.recruitment.organization.repository;
 
 import com.ayshriv.recruitment.organization.entity.Organization;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -45,6 +47,25 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
               AND o.isDeleted = false
             """)
     Optional<Organization> findActiveOrganization(@Param("id") Long id);
+
+    /**
+     * Lock the organization row with a pessimistic write lock.
+     *
+     * <p>Used by the client module to serialize client code allocation per
+     * tenant: concurrent client creations for the same organization queue on
+     * this lock so that the next client code is always derived from the
+     * committed state.</p>
+     *
+     * @param id organization primary key
+     * @return matching organization, if any
+     */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+            SELECT o
+            FROM Organization o
+            WHERE o.id = :id
+            """)
+    Optional<Organization> findByIdForUpdate(@Param("id") Long id);
 
     /**
      * Find a non deleted organization by email, ignoring case.

@@ -1,7 +1,11 @@
 package com.ayshriv.recruitment;
 
 import com.ayshriv.recruitment.apiKey.repository.ApiKeyRepository;
+import com.ayshriv.recruitment.client.repository.ClientRepository;
+import com.ayshriv.recruitment.clientContact.repository.ClientContactRepository;
 import com.ayshriv.recruitment.organization.repository.OrganizationRepository;
+import com.ayshriv.recruitment.role.repository.RoleRepository;
+import com.ayshriv.recruitment.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,9 +37,25 @@ class FlywayMigrationIntegrationTest {
     @Autowired
     private OrganizationRepository organizationRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private ClientContactRepository clientContactRepository;
+
     @Test
     void flywayMigrationsApplyAndJpaSchemaValidates() {
         assertThat(apiKeyRepository.count()).isZero();
         assertThat(organizationRepository.count()).isZero();
+        assertThat(userRepository.count()).isZero();
+        assertThat(roleRepository.count()).isEqualTo(6);
+        assertThat(clientRepository.count()).isZero();
+        assertThat(clientContactRepository.count()).isZero();
     }
 }

@@ -7,9 +7,12 @@ import com.ayshriv.recruitment.common.config.AppProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,6 +27,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     /**
@@ -89,6 +93,19 @@ public class SecurityConfig {
                                                                  ApiKeyAuthenticationEntryPoint entryPoint,
                                                                  AppProperties appProperties) {
         return new ApiKeyAuthenticationFilter(apiKeyService, entryPoint, appProperties);
+    }
+
+    /**
+     * Password encoder used to hash user passwords before storage.
+     *
+     * <p>Plaintext passwords are never stored; every password is hashed with
+     * BCrypt before it reaches the database.</p>
+     *
+     * @return BCrypt password encoder
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /**

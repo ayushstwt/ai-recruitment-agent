@@ -2,14 +2,23 @@ package com.ayshriv.recruitment.common.security;
 
 import com.ayshriv.recruitment.apiKey.security.ApiKeyPrincipal;
 import com.ayshriv.recruitment.common.exception.UnauthorizedException;
+import com.ayshriv.recruitment.user.security.UserPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
- * Read access to the current authenticated {@link ApiKeyPrincipal}.
+ * Read access to the current authenticated identity.
+ *
+ * <p>Today the only supported identity is an {@link ApiKeyPrincipal}, which
+ * identifies the calling organization. The {@code getCurrentUserId()} and
+ * {@code getCurrentRoles()} accessors prepare the architecture for a future
+ * user session / JWT authentication flow backed by {@link UserPrincipal};
+ * while only API key authentication exists they resolve to
+ * {@link Optional#empty()}.</p>
  */
 @Component
 public class SecurityContextService {
@@ -52,11 +61,45 @@ public class SecurityContextService {
     }
 
     /**
+     * User id of the current request, when user authentication is active.
+     *
+     * <p>Resolves only for {@link UserPrincipal} based authentication. With
+     * API key authentication there is no acting user yet, so the result is
+     * empty.</p>
+     *
+     * @return present user id when the request is authenticated as a user
+     */
+    public Optional<Long> getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserPrincipal principal) {
+            return Optional.of(principal.userId());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Role names of the current request, when user authentication is active.
+     *
+     * <p>Resolves only for {@link UserPrincipal} based authentication. With
+     * API key authentication there are no user roles yet, so the result is
+     * empty.</p>
+     *
+     * @return present set of role names when the request is authenticated as a user
+     */
+    public Optional<Set<String>> getCurrentRoles() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserPrincipal principal) {
+            return Optional.of(principal.roles());
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Whether the current request is authenticated.
      *
      * @return {@code true} when authenticated
      */
     public boolean isAuthenticated() {
-        return getCurrentPrincipal().isPresent();
+        return getCurrentPrincipal().isPresent() || getCurrentUserId().isPresent();
     }
 }

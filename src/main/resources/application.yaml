@@ -21,3 +21,9 @@ app:
   security:
     api-key:
       header-name: ${API_KEY_HEADER_NAME:X-API-KEY}
+    password-policy:
+      min-length: ${PASSWORD_MIN_LENGTH:8}
+      require-uppercase: ${PASSWORD_REQUIRE_UPPERCASE:true}
+      require-lowercase: ${PASSWORD_REQUIRE_LOWERCASE:true}
+      require-digit: ${PASSWORD_REQUIRE_DIGIT:true}
+      require-special-character: ${PASSWORD_REQUIRE_SPECIAL:true}

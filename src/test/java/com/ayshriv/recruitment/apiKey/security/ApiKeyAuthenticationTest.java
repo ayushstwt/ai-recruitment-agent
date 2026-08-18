@@ -1,12 +1,16 @@
 package com.ayshriv.recruitment.apiKey.security;
 
 import com.ayshriv.recruitment.apiKey.service.ApiKeyService;
+import com.ayshriv.recruitment.client.service.ClientService;
+import com.ayshriv.recruitment.clientContact.service.ClientContactService;
 import com.ayshriv.recruitment.common.config.AppProperties;
 import com.ayshriv.recruitment.common.response.ApiResponse;
 import com.ayshriv.recruitment.common.response.ResponseUtil;
 import com.ayshriv.recruitment.common.security.SecurityConfig;
 import com.ayshriv.recruitment.common.security.SecurityContextService;
 import com.ayshriv.recruitment.organization.service.OrganizationService;
+import com.ayshriv.recruitment.role.service.RoleService;
+import com.ayshriv.recruitment.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +58,18 @@ class ApiKeyAuthenticationTest {
 
     @MockitoBean
     private OrganizationService organizationService;
+
+    @MockitoBean
+    private UserService userService;
+
+    @MockitoBean
+    private RoleService roleService;
+
+    @MockitoBean
+    private ClientService clientService;
+
+    @MockitoBean
+    private ClientContactService clientContactService;
 
     @RestController
     @RequestMapping("/api/v1/secure")
