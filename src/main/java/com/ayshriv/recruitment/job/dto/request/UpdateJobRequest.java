@@ -1,0 +1,155 @@
+package com.ayshriv.recruitment.job.dto.request;
+
+import com.ayshriv.recruitment.job.entity.EmploymentType;
+import com.ayshriv.recruitment.job.entity.ExperienceLevel;
+import com.ayshriv.recruitment.job.entity.JobPriority;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+/**
+ * Request payload for updating a job.
+ *
+ * <p>Immutable fields (id, job code, organization, client, created-by user,
+ * lifecycle timestamps, deleted flag) are never part of the payload. The
+ * client is reassigned only through the dedicated change-client endpoint and
+ * the status only through the dedicated status endpoints.</p>
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdateJobRequest {
+
+    /**
+     * Display title of the job.
+     */
+    @NotBlank(message = "Title is required")
+    @Size(max = 200, message = "Title must be at most 200 characters")
+    private String title;
+
+    /**
+     * Long description of the job.
+     */
+    @NotBlank(message = "Description is required")
+    @Size(max = 4000, message = "Description must be at most 4000 characters")
+    private String description;
+
+    /**
+     * Required skills and qualifications.
+     */
+    @NotBlank(message = "Requirements are required")
+    @Size(max = 4000, message = "Requirements must be at most 4000 characters")
+    private String requirements;
+
+    /**
+     * Day to day responsibilities.
+     */
+    @Size(max = 4000, message = "Responsibilities must be at most 4000 characters")
+    private String responsibilities;
+
+    /**
+     * Free form work location label.
+     */
+    @Size(max = 200, message = "Location must be at most 200 characters")
+    private String location;
+
+    /**
+     * Country where the work is based.
+     */
+    @Size(max = 100, message = "Country must be at most 100 characters")
+    private String country;
+
+    /**
+     * State / province where the work is based.
+     */
+    @Size(max = 100, message = "State must be at most 100 characters")
+    private String state;
+
+    /**
+     * City where the work is based.
+     */
+    @Size(max = 100, message = "City must be at most 100 characters")
+    private String city;
+
+    /**
+     * Whether the role can be performed remotely.
+     */
+    private Boolean remote;
+
+    /**
+     * Contract arrangement.
+     */
+    @NotNull(message = "Employment type is required")
+    private EmploymentType employmentType;
+
+    /**
+     * Seniority band.
+     */
+    @NotNull(message = "Experience level is required")
+    private ExperienceLevel experienceLevel;
+
+    /**
+     * Minimum years of experience required.
+     */
+    @Min(value = 0, message = "Min experience must be 0 or more")
+    private Integer minExperience;
+
+    /**
+     * Maximum years of experience required.
+     */
+    @Min(value = 0, message = "Max experience must be 0 or more")
+    private Integer maxExperience;
+
+    /**
+     * Minimum offered annual salary.
+     */
+    @PositiveOrZero(message = "Salary min must be 0 or more")
+    private BigDecimal salaryMin;
+
+    /**
+     * Maximum offered annual salary.
+     */
+    @PositiveOrZero(message = "Salary max must be 0 or more")
+    private BigDecimal salaryMax;
+
+    /**
+     * ISO 4217 currency code of the salary.
+     */
+    @Size(max = 10, message = "Currency must be at most 10 characters")
+    private String currency;
+
+    /**
+     * Department within the client company.
+     */
+    @Size(max = 100, message = "Department must be at most 100 characters")
+    private String department;
+
+    /**
+     * Number of open positions covered by this job.
+     */
+    @NotNull(message = "Number of openings is required")
+    @Min(value = 1, message = "Number of openings must be at least 1")
+    private Integer numberOfOpenings;
+
+    /**
+     * Urgency band.
+     */
+    private JobPriority priority;
+
+    /**
+     * Last date applications are accepted, must be in the future.
+     */
+    @Future(message = "Closing date must be in the future")
+    private LocalDate closingDate;
+}

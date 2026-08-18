@@ -8,6 +8,7 @@ import com.ayshriv.recruitment.common.response.ApiResponse;
 import com.ayshriv.recruitment.common.response.ResponseUtil;
 import com.ayshriv.recruitment.common.security.SecurityConfig;
 import com.ayshriv.recruitment.common.security.SecurityContextService;
+import com.ayshriv.recruitment.job.service.JobService;
 import com.ayshriv.recruitment.organization.service.OrganizationService;
 import com.ayshriv.recruitment.role.service.RoleService;
 import com.ayshriv.recruitment.user.service.UserService;
@@ -70,6 +71,9 @@ class ApiKeyAuthenticationTest {
 
     @MockitoBean
     private ClientContactService clientContactService;
+
+    @MockitoBean
+    private JobService jobService;
 
     @RestController
     @RequestMapping("/api/v1/secure")

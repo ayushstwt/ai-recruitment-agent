@@ -3,6 +3,7 @@ package com.ayshriv.recruitment;
 import com.ayshriv.recruitment.apiKey.repository.ApiKeyRepository;
 import com.ayshriv.recruitment.client.repository.ClientRepository;
 import com.ayshriv.recruitment.clientContact.repository.ClientContactRepository;
+import com.ayshriv.recruitment.job.repository.JobRepository;
 import com.ayshriv.recruitment.organization.repository.OrganizationRepository;
 import com.ayshriv.recruitment.role.repository.RoleRepository;
 import com.ayshriv.recruitment.user.repository.UserRepository;
@@ -49,6 +50,9 @@ class FlywayMigrationIntegrationTest {
     @Autowired
     private ClientContactRepository clientContactRepository;
 
+    @Autowired
+    private JobRepository jobRepository;
+
     @Test
     void flywayMigrationsApplyAndJpaSchemaValidates() {
         assertThat(apiKeyRepository.count()).isZero();
@@ -57,5 +61,6 @@ class FlywayMigrationIntegrationTest {
         assertThat(roleRepository.count()).isEqualTo(6);
         assertThat(clientRepository.count()).isZero();
         assertThat(clientContactRepository.count()).isZero();
+        assertThat(jobRepository.count()).isZero();
     }
 }

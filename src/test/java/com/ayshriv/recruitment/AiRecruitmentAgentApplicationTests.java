@@ -3,6 +3,7 @@ package com.ayshriv.recruitment;
 import com.ayshriv.recruitment.apiKey.repository.ApiKeyRepository;
 import com.ayshriv.recruitment.client.repository.ClientRepository;
 import com.ayshriv.recruitment.clientContact.repository.ClientContactRepository;
+import com.ayshriv.recruitment.job.repository.JobRepository;
 import com.ayshriv.recruitment.organization.repository.OrganizationRepository;
 import com.ayshriv.recruitment.role.repository.RoleRepository;
 import com.ayshriv.recruitment.user.repository.UserRepository;
@@ -34,6 +35,9 @@ class AiRecruitmentAgentApplicationTests {
 
     @MockitoBean
     private ClientContactRepository clientContactRepository;
+
+    @MockitoBean
+    private JobRepository jobRepository;
 
     @Test
     void contextLoads() {
